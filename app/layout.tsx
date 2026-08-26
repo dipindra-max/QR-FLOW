@@ -33,3 +33,4 @@ export default function RootLayout({
     </html>
   );
 }
+import ServiceWorker from "@/components/ServiceWorker";
