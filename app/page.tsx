@@ -1,60 +1,176 @@
 import Link from "next/link";
-import { prisma } from "@/lib/prisma";
+import InstallButton from "../components/InstallButton";
 
-export default async function Home() {
-  const codes = await prisma.qrCode.findMany({ orderBy: { createdAt: "desc" }, take: 5 }).catch(() => []);
-  const totalScans = codes.reduce((n, q) => n + q.scans, 0);
+const tools = [
+  {
+    icon: "▣",
+    title: "QR Scanner",
+    description: "Scan QR codes using your camera or saved images.",
+    href: "/scanner",
+  },
+  {
+    icon: "◇",
+    title: "QR Creator",
+    description: "Create beautiful QR codes for links, text and more.",
+    href: "/create",
+  },
+  {
+    icon: "▤",
+    title: "Document Scanner",
+    description: "Turn physical documents into clean digital files.",
+    href: "/scanner",
+  },
+  {
+    icon: "PDF",
+    title: "PDF Maker",
+    description: "Create PDFs from images and scanned documents.",
+    href: "/pdf",
+  },
+  {
+    icon: "✦",
+    title: "PDF Tools",
+    description: "Merge, split, compress and organize PDF files.",
+    href: "/pdf",
+  },
+  {
+    icon: "↕",
+    title: "File Tools",
+    description: "Useful everyday tools for images and documents.",
+    href: "/tools",
+  },
+];
 
+export default function Home() {
   return (
-    <main>
+    <main className="app-shell">
       <header className="topbar">
-        <Link className="brand" href="/">QR<span>Flow</span></Link>
-        <nav><Link href="#features">Features</Link><Link href="#pricing">Pricing</Link><Link href="/dashboard">Dashboard</Link></nav>
-        <Link className="btn btn-small" href="/create">Create QR</Link>
+        <Link className="brand" href="/">
+          QR<span>Flow</span>
+        </Link>
+
+        <nav>
+          <Link href="/create">QR Creator</Link>
+          <Link href="/dashboard">Dashboard</Link>
+        </nav>
+
+        <InstallButton />
       </header>
 
       <section className="hero">
         <div className="hero-copy">
-          <div className="eyebrow">DYNAMIC QR PLATFORM</div>
-          <h1>QR codes that <span>flow with your business.</span></h1>
-          <p>Create beautiful QR codes, update destinations anytime, and understand every scan from one clean dashboard.</p>
-          <div className="hero-actions"><Link className="btn" href="/create">Create your first QR</Link><Link className="btn ghost" href="/dashboard">Explore dashboard →</Link></div>
-          <div className="trust"><span>✓ Dynamic links</span><span>✓ Analytics</span><span>✓ SVG & PNG</span></div>
+          <div className="eyebrow">YOUR EVERYDAY DIGITAL TOOLKIT</div>
+
+          <h1>
+            One place for your
+            <span> digital tools.</span>
+          </h1>
+
+          <p>
+            Create and scan QR codes, scan documents, make PDFs and manage
+            useful everyday files from one fast, simple platform.
+          </p>
+
+          <div className="hero-actions">
+            <Link className="btn" href="/create">
+              Create a QR code
+            </Link>
+
+            <Link className="btn ghost" href="/dashboard">
+              Open Dashboard →
+            </Link>
+          </div>
+
+          <div className="trust">
+            <span>✓ Fast</span>
+            <span>✓ Mobile friendly</span>
+            <span>✓ Installable</span>
+          </div>
         </div>
+
         <div className="hero-card">
           <div className="mini-window">
-            <div className="window-head"><b>Campaign performance</b><span className="live">● Live</span></div>
-            <div className="metric"><strong>{totalScans.toLocaleString()}</strong><small>Total scans</small></div>
-            <div className="chart">{[42,58,48,72,64,88,79,94,83,100,91,108].map((h,i)=><i key={i} style={{height:`${h/1.35}px`}} />)}</div>
-            <div className="stats"><span><b>+24.8%</b><small>vs last month</small></span><span><b>86%</b><small>mobile scans</small></span></div>
+            <div className="window-head">
+              <strong>QRFlow Toolkit</strong>
+              <span className="live">● READY</span>
+            </div>
+
+            <div className="metric">
+              <strong>Everything</strong>
+              <small>you need in one place</small>
+            </div>
+
+            <div className="chart">
+              <i style={{ height: "35%" }} />
+              <i style={{ height: "52%" }} />
+              <i style={{ height: "45%" }} />
+              <i style={{ height: "70%" }} />
+              <i style={{ height: "62%" }} />
+              <i style={{ height: "86%" }} />
+              <i style={{ height: "76%" }} />
+            </div>
+
+            <div className="stats">
+              <div>
+                <b>QR</b>
+                <small>Tools</small>
+              </div>
+
+              <div>
+                <b>PDF</b>
+                <small>Tools</small>
+              </div>
+
+              <div>
+                <b>DOC</b>
+                <small>Scanner</small>
+              </div>
+            </div>
           </div>
         </div>
       </section>
 
-      <section id="features" className="section">
-        <div className="section-title"><div className="eyebrow">BUILT FOR MODERN TEAMS</div><h2>Everything behind the QR.</h2><p>Not just a generator — a complete QR management workspace.</p></div>
+      <section className="section">
+        <div className="section-title">
+          <div className="eyebrow">QRFlow TOOLKIT</div>
+
+          <h2>Useful tools. One platform.</h2>
+
+          <p>
+            QRFlow is being built as an installable everyday utility platform,
+            not just a QR-code generator.
+          </p>
+        </div>
+
         <div className="feature-grid">
-          {[
-            ["↗","Dynamic QR codes","Change a destination without printing a new code."],
-            ["◉","Real-time analytics","Track scans, devices, countries and campaigns."],
-            ["✦","Beautiful designs","Colors, logos, frames and high-resolution exports."],
-            ["⌁","Smart campaigns","Organize codes, tags and performance in one place."],
-            ["▣","Bulk generation","Create and manage hundreds of QR codes efficiently."],
-            ["⚡","Developer API","Connect QRFlow to your own products and workflows."]
-          ].map(([icon,title,text])=><article className="feature" key={title}><div className="feature-icon">{icon}</div><h3>{title}</h3><p>{text}</p></article>)}
+          {tools.map((tool) => (
+            <Link className="feature" href={tool.href} key={tool.title}>
+              <div className="feature-icon">{tool.icon}</div>
+
+              <h3>{tool.title}</h3>
+
+              <p>{tool.description}</p>
+            </Link>
+          ))}
         </div>
       </section>
 
-      <section id="pricing" className="pricing">
-        <div className="section-title"><div className="eyebrow">SIMPLE PRICING</div><h2>Start free. Scale when you need.</h2></div>
-        <div className="price-grid">
-          <article><h3>Free</h3><div className="price">$0 <small>/ forever</small></div><p>For trying QRFlow and personal projects.</p><ul><li>5 dynamic QR codes</li><li>Basic analytics</li><li>PNG & SVG export</li></ul><Link className="btn ghost full" href="/create">Start free</Link></article>
-          <article className="featured"><div className="pill">MOST POPULAR</div><h3>Pro</h3><div className="price">$9 <small>/ month</small></div><p>For creators, marketers and growing businesses.</p><ul><li>Unlimited dynamic QR codes</li><li>Advanced analytics</li><li>Custom branding</li><li>Bulk generation</li><li>API access</li></ul><Link className="btn full" href="/create">Build with QRFlow</Link></article>
-          <article><h3>Business</h3><div className="price">$29 <small>/ month</small></div><p>For teams running multiple campaigns.</p><ul><li>Everything in Pro</li><li>Team workspaces</li><li>Roles & permissions</li><li>Custom domains</li></ul><Link className="btn ghost full" href="/create">Get started</Link></article>
+      <section className="section pricing">
+        <div className="section-title">
+          <div className="eyebrow">BUILT FOR EVERYDAY USE</div>
+
+          <h2>QRFlow is growing beyond QR codes.</h2>
+
+          <p>
+            More document, PDF, file and productivity tools will be added
+            without taking away the QR features you already use.
+          </p>
         </div>
       </section>
 
-      <footer><div className="brand">QR<span>Flow</span></div><p>Dynamic QR infrastructure for the web.</p></footer>
+      <footer>
+        <span>© {new Date().getFullYear()} QRFlow</span>
+        <span>Your everyday digital toolkit.</span>
+      </footer>
     </main>
   );
 }
