@@ -1,5 +1,6 @@
 import "./globals.css";
 import type { Metadata, Viewport } from "next";
+import ServiceWorker from "@/components/ServiceWorker";
 
 export const metadata: Metadata = {
   title: "QRFlow — Your everyday digital toolkit",
@@ -35,4 +36,4 @@ export default function RootLayout({
     </html>
   );
 }
-import ServiceWorker from "@/components/ServiceWorker";
+
